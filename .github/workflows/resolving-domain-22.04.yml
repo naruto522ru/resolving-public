@@ -138,6 +138,16 @@ jobs:
       run: |
         chmod -c 755 /tmp/list_addr.sh && /tmp/list_addr.sh && mv -v /tmp/unblock_suite_ip.txt ./ && mv -v /tmp/unblock_suite_ip_ipset.txt ./
 
+    - name: Prepare,create GFW-list
+      run: |
+        echo -e "[bypass_all]\n[proxy_list]" | tee ss-gfw-list.acl && \
+        cp -fv ./unblock_suite_ip_ipset.txt ./unblock_suite_ip_ipset.edit
+        dos2unix ./unblock_suite_ip_ipset.edit &>/dev/null && \
+        sed -i 's/\/32//g' ./unblock_suite_ip_ipset.edit && sed -i 's/ //g' ./unblock_suite_ip_ipset.edit && \
+        cat ./unblock_suite_ip_ipset.edit >> ss-gfw-list.acl && \
+        dos2unix ./ss-gfw-list.acl &>/dev/null && \
+        sed -i 's/ //g' ./ss-gfw-list.acl && rm -f ./unblock_suite_ip_ipset.edit
+
     - name: Commit file
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -174,8 +184,10 @@ jobs:
             fi
           fi
           git commit -m "Auto-update list by Git Action"
-          git add README.md
+          git add ./README.md
           git commit -m "Auto count IPs in README.md"
+          git add ./ss-gfw-list.acl
+          git commit -m "Auto-update ss-gfw-list.acl"
 
           # push changes
           git push github HEAD:${GITHUB_REF}
@@ -191,6 +203,7 @@ jobs:
         path: |
           unblock_suite_ip_ipset.txt
           unblock_suite_ip.txt
+          ss-gfw-list.acl
 
     - name: Upload artifacts domain list
       uses: actions/upload-artifact@v3
