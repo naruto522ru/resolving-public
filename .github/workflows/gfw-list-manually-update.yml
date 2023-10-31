@@ -43,5 +43,5 @@ jobs:
           git config --local user.name "$(git log --format='%an' --reverse | tail -1)"
 
           git add ./ss-gfw-list.acl
-          git commit -m "Auto-update manually ss-gfw-list.acl"
+          git commit -m "Manually start ss-gfw-list.acl"
           git push github HEAD:${GITHUB_REF}
