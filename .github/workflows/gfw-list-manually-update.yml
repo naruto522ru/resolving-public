@@ -1,0 +1,47 @@
+name: Manually update GFW-list for shadowsocks
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Update_GFW_list:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install base package
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+       sudo apt update
+       sudo apt install -y bind9-dnsutils git wget gawk curl bash coreutils util-linux dos2unix sudo language-pack-ru language-pack-en locales --no-install-suggests
+       sudo sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+       sudo sed -i -e 's/# ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen
+       sudo locale-gen --no-purge en_US.UTF-8 ru_RU.UTF-8
+
+    - name: Prepare,create GFW-list
+      run: |
+        echo -e "[bypass_all]\n[proxy_list]" | tee ss-gfw-list.acl && \
+        cp -fv ./unblock_suite_ip_ipset.txt ./unblock_suite_ip_ipset.edit
+        dos2unix ./unblock_suite_ip_ipset.edit &>/dev/null && \
+        sed -i 's/\/32//g' ./unblock_suite_ip_ipset.edit && sed -i 's/ //g' ./unblock_suite_ip_ipset.edit && \
+        cat ./unblock_suite_ip_ipset.edit >> ss-gfw-list.acl && \
+        dos2unix ./ss-gfw-list.acl &>/dev/null && \
+        sed -i 's/ //g' ./ss-gfw-list.acl && rm -f ./unblock_suite_ip_ipset.edit
+
+    - name: Commit file ss-gfw-list.acl
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+          set -euo pipefail
+
+          git remote add github "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git pull github ${GITHUB_REF} --ff-only
+
+          # Get name & email from last commit
+          git config --local user.email "$(git log --format='%ae' --reverse | tail -1)"
+          git config --local user.name "$(git log --format='%an' --reverse | tail -1)"
+
+          git add ./ss-gfw-list.acl
+          git commit -m "Auto-update manually ss-gfw-list.acl"
+          git push github HEAD:${GITHUB_REF}
