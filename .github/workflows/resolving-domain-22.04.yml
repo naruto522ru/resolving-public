@@ -167,6 +167,35 @@ jobs:
         dos2unix /tmp/ss-gfw-netflix.acl &>/dev/null && \
         sed -i 's/ //g' /tmp/ss-gfw-netflix.acl && cp -f /tmp/ss-gfw-netflix.acl ./ && rm -f /tmp/netflix.edit;
 
+    - name: Prepare artifacts
+      run: echo "BUILD_TIMESTAMP=$(date '+%d.%m.%Y_%H-%M-%S')" >> $GITHUB_ENV
+
+    - name: Upload artifacts address lists merging 
+      uses: actions/upload-artifact@v3
+      with:
+        name: lists_address-merge-${{ env.BUILD_TIMESTAMP }}
+        retention-days: 3
+        path: |
+          unblock_suite_ip_ipset.txt
+          unblock_suite_ip.txt
+          ss-gfw-list.acl
+          ss-gfw-tg.acl
+          ss-gfw-netflix.acl
+
+    - name: Upload artifacts domain list
+      uses: actions/upload-artifact@v3
+      with:
+        name: list_domain-${{ env.BUILD_TIMESTAMP }}
+        retention-days: 3
+        path: /tmp/russia-blacklist.txt
+
+    - name: Upload artifacts address list no merging
+      uses: actions/upload-artifact@v3
+      with:
+        name: list_address-no-merge-${{ env.BUILD_TIMESTAMP }}
+        retention-days: 3
+        path: /tmp/unblock_suite_ip_no_merge.txt
+
     - name: Commit files
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -232,31 +261,3 @@ jobs:
           # push changes
           git push github HEAD:${GITHUB_REF}
 
-    - name: Prepare artifacts
-      run: echo "BUILD_TIMESTAMP=$(date '+%d.%m.%Y_%H-%M-%S')" >> $GITHUB_ENV
-
-    - name: Upload artifacts address lists merging 
-      uses: actions/upload-artifact@v3
-      with:
-        name: lists_address-merge-${{ env.BUILD_TIMESTAMP }}
-        retention-days: 3
-        path: |
-          unblock_suite_ip_ipset.txt
-          unblock_suite_ip.txt
-          ss-gfw-list.acl
-          ss-gfw-tg.acl
-          ss-gfw-netflix.acl
-
-    - name: Upload artifacts domain list
-      uses: actions/upload-artifact@v3
-      with:
-        name: list_domain-${{ env.BUILD_TIMESTAMP }}
-        retention-days: 3
-        path: /tmp/russia-blacklist.txt
-
-    - name: Upload artifacts address list no merging
-      uses: actions/upload-artifact@v3
-      with:
-        name: list_address-no-merge-${{ env.BUILD_TIMESTAMP }}
-        retention-days: 3
-        path: /tmp/unblock_suite_ip_no_merge.txt
