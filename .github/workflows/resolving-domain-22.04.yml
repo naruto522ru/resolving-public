@@ -138,7 +138,10 @@ jobs:
       run: |
         chmod -c 755 /tmp/list_addr.sh && /tmp/list_addr.sh && mv -v /tmp/unblock_suite_ip.txt ./ && mv -v /tmp/unblock_suite_ip_ipset.txt ./
 
-    - name: Prepare,create GFW-list
+    - name: Create GFW-lists
+      env:
+        LANG: en_US.UTF-8
+        CHARSET: UTF-8
       run: |
         echo -e "[bypass_all]\n[proxy_list]" | tee ss-gfw-list.acl && \
         cp -fv ./unblock_suite_ip_ipset.txt ./unblock_suite_ip_ipset.edit
@@ -147,8 +150,24 @@ jobs:
         cat ./unblock_suite_ip_ipset.edit >> ss-gfw-list.acl && \
         dos2unix ./ss-gfw-list.acl &>/dev/null && \
         sed -i 's/ //g' ./ss-gfw-list.acl && rm -f ./unblock_suite_ip_ipset.edit
+        echo -e "\e[1;33mCreate telegram acl list for SS...\033[0m"
+        echo -e "[bypass_all]\n[proxy_list]" | tee /tmp/ss-gfw-tg.acl && \
+        curl --max-time 30 --retry-delay 3 --retry 10 -4 -# https://raw.githubusercontent.com/naruto522ru/ipranges/main/telegram/ipv4_merged.txt | tee /tmp/telegram.edit &>/dev/null && \
+        dos2unix /tmp/telegram.edit &>/dev/null && \
+        sed -i 's/\/32//g' /tmp/telegram.edit && sed -i 's/ //g' /tmp/telegram.edit && \
+        cat /tmp/telegram.edit >> /tmp/ss-gfw-tg.acl && \
+        dos2unix /tmp/ss-gfw-tg.acl &>/dev/null && \
+        sed -i 's/ //g' /tmp/ss-gfw-tg.acl && cp -f /tmp/ss-gfw-tg.acl ./ && rm -f /tmp/telegram.edit;
+        echo -e "\e[1;33mCreate netflix acl list for SS...\033[0m"
+        echo -e "[bypass_all]\n[proxy_list]" | tee /tmp/ss-gfw-netflix.acl && \
+        curl --max-time 30 --retry-delay 3 --retry 10 -4 -# https://raw.githubusercontent.com/naruto522ru/ipranges/main/netflix/ipv4_merged.txt | tee /tmp/netflix.edit &>/dev/null && \
+        dos2unix /tmp/netflix.edit &>/dev/null && \
+        sed -i 's/\/32//g' /tmp/netflix.edit && sed -i 's/ //g' /tmp/netflix.edit && \
+        cat /tmp/netflix.edit >> /tmp/ss-gfw-netflix.acl && \
+        dos2unix /tmp/ss-gfw-netflix.acl &>/dev/null && \
+        sed -i 's/ //g' /tmp/ss-gfw-netflix.acl && cp -f /tmp/ss-gfw-netflix.acl ./ && rm -f /tmp/netflix.edit;
 
-    - name: Commit file
+    - name: Commit files
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LOGIN: ${{ secrets.LOGIN }}
@@ -186,8 +205,29 @@ jobs:
           git commit -m "Auto-update list by Git Action"
           git add ./README.md
           git commit -m "Auto count IPs in README.md"
-          git add ./ss-gfw-list.acl
-          git commit -m "Auto-update ss-gfw-list.acl"
+
+          # push changes
+          git push github HEAD:${GITHUB_REF}
+
+    - name: Commit ACL files for Shadowsocks
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+          set -euo pipefail
+
+          git pull github ${GITHUB_REF} --ff-only
+
+          # Get name & email from last commit
+          git config --local user.email "$(git log --format='%ae' --reverse | tail -1)"
+          git config --local user.name "$(git log --format='%an' --reverse | tail -1)"
+
+          # try commit
+          git add .
+          if [ -z "$(git status --porcelain)" ]; then
+            echo 'No changes'
+            exit 0
+          fi
+          git commit -m "Auto-update ss-gfw-list's"
 
           # push changes
           git push github HEAD:${GITHUB_REF}
@@ -204,6 +244,8 @@ jobs:
           unblock_suite_ip_ipset.txt
           unblock_suite_ip.txt
           ss-gfw-list.acl
+          ss-gfw-tg.acl
+          ss-gfw-netflix.acl
 
     - name: Upload artifacts domain list
       uses: actions/upload-artifact@v3

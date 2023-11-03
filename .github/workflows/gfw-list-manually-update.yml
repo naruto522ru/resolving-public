@@ -19,7 +19,10 @@ jobs:
        sudo sed -i -e 's/# ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen
        sudo locale-gen --no-purge en_US.UTF-8 ru_RU.UTF-8
 
-    - name: Prepare,create GFW-list
+    - name: Create GFW-lists
+      env:
+        LANG: en_US.UTF-8
+        CHARSET: UTF-8
       run: |
         echo -e "[bypass_all]\n[proxy_list]" | tee ss-gfw-list.acl && \
         cp -fv ./unblock_suite_ip_ipset.txt ./unblock_suite_ip_ipset.edit
@@ -28,8 +31,24 @@ jobs:
         cat ./unblock_suite_ip_ipset.edit >> ss-gfw-list.acl && \
         dos2unix ./ss-gfw-list.acl &>/dev/null && \
         sed -i 's/ //g' ./ss-gfw-list.acl && rm -f ./unblock_suite_ip_ipset.edit
+        echo -e "\e[1;33mCreate telegram acl list for SS...\033[0m"
+        echo -e "[bypass_all]\n[proxy_list]" | tee /tmp/ss-gfw-tg.acl && \
+        curl --max-time 30 --retry-delay 3 --retry 10 -4 -# https://raw.githubusercontent.com/naruto522ru/ipranges/main/telegram/ipv4_merged.txt | tee /tmp/telegram.edit &>/dev/null && \
+        dos2unix /tmp/telegram.edit &>/dev/null && \
+        sed -i 's/\/32//g' /tmp/telegram.edit && sed -i 's/ //g' /tmp/telegram.edit && \
+        cat /tmp/telegram.edit >> /tmp/ss-gfw-tg.acl && \
+        dos2unix /tmp/ss-gfw-tg.acl &>/dev/null && \
+        sed -i 's/ //g' /tmp/ss-gfw-tg.acl && cp -f /tmp/ss-gfw-tg.acl ./ && rm -f /tmp/telegram.edit;
+        echo -e "\e[1;33mCreate netflix acl list for SS...\033[0m"
+        echo -e "[bypass_all]\n[proxy_list]" | tee /tmp/ss-gfw-netflix.acl && \
+        curl --max-time 30 --retry-delay 3 --retry 10 -4 -# https://raw.githubusercontent.com/naruto522ru/ipranges/main/netflix/ipv4_merged.txt | tee /tmp/netflix.edit &>/dev/null && \
+        dos2unix /tmp/netflix.edit &>/dev/null && \
+        sed -i 's/\/32//g' /tmp/netflix.edit && sed -i 's/ //g' /tmp/netflix.edit && \
+        cat /tmp/netflix.edit >> /tmp/ss-gfw-netflix.acl && \
+        dos2unix /tmp/ss-gfw-netflix.acl &>/dev/null && \
+        sed -i 's/ //g' /tmp/ss-gfw-netflix.acl && cp -f /tmp/ss-gfw-netflix.acl ./ && rm -f /tmp/netflix.edit;
 
-    - name: Commit file ss-gfw-list.acl
+    - name: Commit files
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
@@ -38,10 +57,17 @@ jobs:
           git remote add github "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git pull github ${GITHUB_REF} --ff-only
 
-          # Get name & email from last commit
-          git config --local user.email "$(git log --format='%ae' --reverse | tail -1)"
-          git config --local user.name "$(git log --format='%an' --reverse | tail -1)"
+          # Get name & email from 1st commit
+          git config --local user.email "$(git log --format='%ae' --reverse | head -1)"
+          git config --local user.name "$(git log --format='%an' --reverse | head -1)"
 
-          git add ./ss-gfw-list.acl
-          git commit -m "Manually start ss-gfw-list.acl"
+          # try commit
+          git add .
+          if [ -z "$(git status --porcelain)" ]; then
+            echo 'No changes'
+            exit 0
+          fi
+          git commit -m "Manually update ss-gfw-list's"
+
+          # push changes
           git push github HEAD:${GITHUB_REF}
