@@ -42,7 +42,7 @@ jobs:
 #       sudo ln -svf /etc/resolv.conf.DNSoverride /etc/resolv.conf
 #       cat -n /etc/resolv.conf
 #       echo ""
-#      cat -n /etc/hosts
+#       cat -n /etc/hosts
 #       echo ""
 #       sudo systemctl restart systemd-resolved.service
 
