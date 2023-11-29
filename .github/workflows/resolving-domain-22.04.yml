@@ -166,6 +166,14 @@ jobs:
         cat /tmp/netflix.edit >> /tmp/ss-gfw-netflix.acl && \
         dos2unix /tmp/ss-gfw-netflix.acl &>/dev/null && \
         sed -i 's/ //g' /tmp/ss-gfw-netflix.acl && cp -f /tmp/ss-gfw-netflix.acl ./ && rm -f /tmp/netflix.edit;
+        echo -e "\e[1;33mCreate Spotify acl list for SS...\033[0m"
+        echo -e "[bypass_all]\n[proxy_list]" | tee /tmp/ss-gfw-spotify.acl && \
+        curl --max-time 30 --retry-delay 3 --retry 10 -4 -# https://raw.githubusercontent.com/naruto522ru/ipranges/main/spotify/ipv4_merged.txt | tee /tmp/spotify.edit &>/dev/null && \
+        dos2unix /tmp/spotify.edit &>/dev/null && \
+        sed -i 's/\/32//g' /tmp/spotify.edit && sed -i 's/ //g' /tmp/spotify.edit && \
+        cat /tmp/spotify.edit >> /tmp/ss-gfw-spotify.acl && \
+        dos2unix /tmp/ss-gfw-spotify.acl &>/dev/null && \
+        sed -i 's/ //g' /tmp/ss-gfw-spotify.acl && cp -f /tmp/ss-gfw-spotify.acl ./ && rm -f /tmp/spotify.edit;
 
     - name: Prepare artifacts
       run: echo "BUILD_TIMESTAMP=$(date '+%d.%m.%Y_%H-%M-%S')" >> $GITHUB_ENV
@@ -181,6 +189,7 @@ jobs:
           ss-gfw-list.acl
           ss-gfw-tg.acl
           ss-gfw-netflix.acl
+          ss-gfw-spotify.acl
 
     - name: Upload artifacts domain list
       uses: actions/upload-artifact@v3
