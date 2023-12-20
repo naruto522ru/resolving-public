@@ -35,7 +35,7 @@ jobs:
         sed -i '1,2d' /tmp/youtube_acl.edit
         cat /tmp/youtube_acl.edit >> ss-gfw-list.acl && \
         #Add my domain
-        echo -e "tmdb.org\nthemoviedb.org" | sed 's/\./\\./g' > /tmp/temp_file && for domain in $(cat /tmp/temp_file); do echo \(\?\:\^\|\\\.\)${domain}$ >> ./ss-gfw-list.acl; done
+        echo -e "tmdb.org\nthemoviedb.org" | sed 's/\./\\./g' > /tmp/temp_file && for domain in $(cat /tmp/temp_file); do echo \(\?\:\^\|\\\.\)${domain}$ >> ./ss-gfw-list.acl; done && \
         cat ./unblock_suite_ip_ipset.edit >> ./ss-gfw-list.acl && \
         dos2unix ./ss-gfw-list.acl &>/dev/null && \
         rm -f ./unblock_suite_ip_ipset.edit && \
