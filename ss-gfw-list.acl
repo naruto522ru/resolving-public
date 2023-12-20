@@ -53,6 +53,8 @@
 (?:^|\.)youtube-nocookie\.com$
 (?:^|\.)yt3\.ggpht\.com$
 (?:^|\.)ytimg\.com$
+(?:^|\.)tmdb\.org$
+(?:^|\.)themoviedb\.org$
 1.23.32.17
 1.23.32.21
 1.255.53.121
