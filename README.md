@@ -2,8 +2,8 @@
 
 | File      | CIDR  | IP's| Total IP's | Size in memory (ipset)|Line in file | Size file (Mb)
 |:----------:|:------------:|:------------:|:------------:|:------------:|:------------:|:------------:
-|unblock_suite_ip.txt [RAW](https://raw.githubusercontent.com/naruto522ru/resolving-public/main/unblock_suite_ip.txt)|10792|28763|20877587|1.09 Mb|39555|0.641 Mb
-|unblock_suite_ip_ipset.txt [RAW](https://raw.githubusercontent.com/naruto522ru/resolving-public/main/unblock_suite_ip_ipset.txt)|513|18908|21327964|0.536 Mb|19421|0.314 Mb
+|unblock_suite_ip.txt [RAW](https://raw.githubusercontent.com/naruto522ru/resolving-public/main/unblock_suite_ip.txt)|10734|28956|20877506|1.09 Mb|39690|0.643 Mb
+|unblock_suite_ip_ipset.txt [RAW](https://raw.githubusercontent.com/naruto522ru/resolving-public/main/unblock_suite_ip_ipset.txt)|509|19079|21324679|0.541 Mb|19588|0.317 Mb
 
 Размер потребления (ОЗУ) приблизительна, потому что на разных хостах с одним тем же списком она разная погрешность потребления +- меньше 1-ого процента от указанного. 
 
