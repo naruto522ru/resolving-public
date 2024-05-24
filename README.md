@@ -123,8 +123,6 @@ https://github.com/naruto522ru/ipranges
 
 https://github.com/naruto522ru/ipranges-shadowsocks
 
-https://github.com/naruto522ru/ipranges-unmerging
-
 ***ENG:***
 
 Description:
@@ -180,5 +178,3 @@ You can also manually run GitHub Action (you need authorization and account). An
 https://github.com/naruto522ru/ipranges
 
 https://github.com/naruto522ru/ipranges-shadowsocks
-
-https://github.com/naruto522ru/ipranges-unmerging
