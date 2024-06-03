@@ -13,7 +13,7 @@
 В этих списках находятся адреса этих доменов из этого [списка](https://antizapret.prostovpn.org/domains-export.txt).
 К ним добавлены подсети Meta (Instagram,Facebook,Whatsapp),Twitter,Google.
 Некоторые CDN подсети для работы Spotify,Twitter.
-Добавлены некоторые свои домена (весь список огласить не могу) например: [ReturnDislike](https://returnyoutubedislike.com) (включая их API),[SponsorBlock](https://sponsor.ajay.app) (и их резервное зеркало). 100 самых популярных (статический лист, c некоторыми правками убрал сайты из списка не относящиеся к adult категории) [сайтов](https://gist.githubusercontent.com/lord-alfred/9235861756400b9dd2593d727c31b0b1/raw/59b688029ebb44ebc4e36c64a024377dfd7b27c0/porn_sites.txt) для взрослых,[ChatGPT](https://chat.openai.com).
+Добавлены некоторые свои домена (весь список огласить не могу) например: [ReturnDislike](https://returnyoutubedislike.com) (включая их API),[SponsorBlock](https://sponsor.ajay.app) (и их резервное зеркало). 100 самых популярных (статический лист, c некоторыми правками убрал сайты из списка не относящиеся к adult категории) [сайтов](https://gist.githubusercontent.com/lord-alfred/9235861756400b9dd2593d727c31b0b1/raw/59b688029ebb44ebc4e36c64a024377dfd7b27c0/porn_sites.txt) для взрослых,[ChatGPT](https://chat.openai.com), Docker хаб с регистром. 
 
 ***Что исключается из списка?***
 
@@ -130,7 +130,7 @@ These lists contain the addresses of these domains from this [list](https://anti
 Meta subnets (Instagram,Facebook,Whatsapp),Twitter,Google have been added to them.
 Some CDN subnets to run Spotify,Twitter.
 Some own domains have been added (I can't tell you the whole list) such as: [ReturnDislike](https://returnyoutubedislike.com) (including their API),[SponsorBlock](https://sponsor.ajay.app) (and their backup mirror).
-The 100 most popular adult [websites](https://gist.githubusercontent.com/lord-alfred/9235861756400b9dd2593d727c31b0b1/raw/59b688029ebb44ebc4e36c64a024377dfd7b27c0/porn_sites.txt) (static list),[ChatGPT](https://chat.openai.com).
+The 100 most popular adult [websites](https://gist.githubusercontent.com/lord-alfred/9235861756400b9dd2593d727c31b0b1/raw/59b688029ebb44ebc4e36c64a024377dfd7b27c0/porn_sites.txt) (static list),[ChatGPT](https://chat.openai.com), Docker with registry.
 
 ***What is excluded from the list?***
 
