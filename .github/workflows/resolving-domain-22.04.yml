@@ -105,7 +105,7 @@ jobs:
        sudo sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
        sudo sed -i -e 's/# ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen
        sudo locale-gen --no-purge en_US.UTF-8 ru_RU.UTF-8
-       sudo apt install -y python3-pip grepcidr python3-netaddr jq idn ipset bc --no-install-suggests
+       sudo apt install -y grepcidr jq idn ipset bc --no-install-suggests
 
     - name: Getting source mdig-bolvan,ip2net and compile
       env:
@@ -126,6 +126,24 @@ jobs:
         curl --max-time 30 --retry-delay 3 --retry 10 -4 -H "Authorization: token ${TOKEN}" -# https://raw.githubusercontent.com/naruto522ru/resolving-private/main/russia-blacklist.txt > /tmp/russia-blacklist.txt
         curl --max-time 30 --retry-delay 3 --retry 10 -4 -H "Authorization: token ${TOKEN}" -# https://raw.githubusercontent.com/naruto522ru/resolving-private/main/unblock_suite.txt > /tmp/unblock_suite.txt
         curl --max-time 30 --retry-delay 3 --retry 10 -4 -H "Authorization: token ${TOKEN}" -# https://raw.githubusercontent.com/naruto522ru/resolving-private/main/list_addr.sh > /tmp/list_addr.sh
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+          python-version: '3.11'
+
+    - name: Cache pip
+      uses: actions/cache@v4
+      with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
+
+    - name: Install dependencies
+      run: |
+          pip install -r requirements.txt
 
     - name: Pre-start and start bash script
       env:
