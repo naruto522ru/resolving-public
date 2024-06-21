@@ -31,9 +31,11 @@ jobs:
 
 #    - name: Settings DoT DNS with systemd-resolved
 #      run: |
-#       sudo mkdir -p /etc/systemd/resolved.conf.d/
-#       echo -e "[Resolve]\nDNS=8.8.4.4#dns.google\nFallbackDNS=\nDNSOverTLS=yes\nDNSSEC=yes\nCache=no\nCacheFromLocalhost=no\nReadEtcHosts=no" | sudo tee /etc/systemd/resolved.conf.d/google.conf &>/dev/null;
-#       echo -e "[Resolve]\nDNS=1.0.0.1#1dot1dot1dot1.cloudflare-dns.com\nFallbackDNS=\nDNSOverTLS=yes\nDNSSEC=yes\nCache=no\nCacheFromLocalhost=no\nReadEtcHosts=no" | sudo tee /etc/systemd/resolved.conf.d/cloudflare.conf &>/dev/null;
+#       sudo apt update
+#       sudo apt install -y bind9-dnsutils sudo --no-install-suggests
+#       sudo mkdir -pv /etc/systemd/resolved.conf.d/
+#       echo -e "[Resolve]\nDNS=8.8.4.4#dns.google\nFallbackDNS=\nDNSOverTLS=yes\nDNSSEC=yes\nCache=yes\nCacheFromLocalhost=yes\nReadEtcHosts=no" | sudo tee /etc/systemd/resolved.conf.d/google.conf &>/dev/null;
+#       echo -e "[Resolve]\nDNS=1.0.0.1#1dot1dot1dot1.cloudflare-dns.com\nFallbackDNS=\nDNSOverTLS=yes\nDNSSEC=yes\nCache=yes\nCacheFromLocalhost=yes\nReadEtcHosts=no" | sudo tee /etc/systemd/resolved.conf.d/cloudflare.conf &>/dev/null;
 #       cat /etc/systemd/resolved.conf.d/google.conf
 #       echo ""
 #       cat /etc/systemd/resolved.conf.d/cloudflare.conf
@@ -44,7 +46,9 @@ jobs:
 #       echo ""
 #       cat -n /etc/hosts
 #       echo ""
-#       sudo systemctl restart systemd-resolved.service
+#       sudo systemctl restart systemd-resolved.service 
+#       sleep 3s
+#       nc -z -v 127.0.0.53 53 && echo ""
 
 ############################
     - name: Install depens for CoreDNS
