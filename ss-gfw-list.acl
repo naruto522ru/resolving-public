@@ -1,8 +1,10 @@
 [bypass_all]
 [proxy_list]
-(?:^|\.)404:$
-(?:^|\.)Not$
-(?:^|\.)Found$
+(?:^|\.)api2\.branch\.io$
+(?:^|\.)audio4-ak-spotify-com\.akamaized\.net$
+(?:^|\.)cdn\.cookielaw\.org$
+(?:^|\.)sentry\.io$
+(?:^|\.)spotify\.com$
 (?:^|\.)adblocker-for-youtube\.freeonlineapps\.net$
 (?:^|\.)audio-equalizer-youtube\.freespeedcheck\.net$
 (?:^|\.)deviceintegritytokens-pa\.googleapis\.com$
