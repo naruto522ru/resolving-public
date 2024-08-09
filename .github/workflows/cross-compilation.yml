@@ -31,11 +31,11 @@ jobs:
        wget -nv -4 https://github.com/openlgtv/buildroot-nc4/releases/download/webos-b17b4cc/arm-lgtv-linux-gnueabi_sdk-buildroot.tar.gz -P /tmp && cd /tmp
        bsdtar -pxf /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot.tar.gz
        ./arm-lgtv-linux-gnueabi_sdk-buildroot/relocate-sdk.sh
-        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/bin/arm-linux-gcc /usr/bin/gcc
-        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/bin/arm-linux-g++ /usr/bin/g++
-        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/bin/arm-linux-cpp /usr/bin/cpp
-        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/bin/arm-linux-gcov /usr/bin/gcov
-        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/bin/arm-linux-c++ /usr/bin/c++
+        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/usr/bin/arm-lgtv-linux-gnueabi-gcc /usr/bin/gcc
+        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/usr/bin/arm-lgtv-linux-gnueabi-g++ /usr/bin/g++
+        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/usr/bin/arm-lgtv-linux-gnueabi-cpp /usr/bin/cpp
+        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/usr/bin/arm-lgtv-linux-gnueabi-gcov /usr/bin/gcov
+        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/usr/bin/arm-lgtv-linux-gnueabi-c++ /usr/bin/c++
        
     - name: Cloning repos
       run: |
