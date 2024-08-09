@@ -28,6 +28,6 @@ jobs:
        
     - name: Downlownd WeOS NDK
       run: |
-       wget https://github.com/openlgtv/buildroot-nc4/releases/download/webos-b17b4cc/arm-lgtv-linux-gnueabi_sdk-buildroot.tar.gz -P /tmp
-       bsdtar -pxf /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot.tar.gz -C /tmp
-       ./tmp/arm-webos-linux-gnueabi_sdk-buildroot/relocate-sdk.sh
+       wget -nv -4 https://github.com/openlgtv/buildroot-nc4/releases/download/webos-b17b4cc/arm-lgtv-linux-gnueabi_sdk-buildroot.tar.gz -P /tmp && cd /tmp
+       bsdtar -pxf /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot.tar.gz
+       ./arm-webos-linux-gnueabi_sdk-buildroot/relocate-sdk.sh
