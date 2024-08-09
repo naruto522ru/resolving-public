@@ -28,15 +28,15 @@ jobs:
 
     - name: Download WebOS NDK
       run: |
-       wget -nv -4 https://releases.linaro.org/components/toolchain/binaries/5.2-2015.11-1/arm-linux-gnueabi/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi.tar.xz -P /tmp && cd /tmp
-       bsdtar -pxf /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi.tar.xz
-       rm -f /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi.tar.xz
-       sudo ln -sfv /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc /usr/bin/gcc
-       sudo ln -sfv /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ /usr/bin/g++
-       sudo ln -sfv /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-cpp /usr/bin/cpp
-       sudo ln -sfv /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcov /usr/bin/gcov
-       sudo ln -sfv /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-c++ /usr/bin/c++
-       sudo ln -sfv /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc /usr/bin/cc
+       wget -nv -4 http://releases.linaro.org/components/toolchain/binaries/7.5-2019.12/arm-linux-gnueabihf/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz -P /tmp && cd /tmp
+       bsdtar -pxf /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz
+       rm -f /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz
+       sudo ln -sfv /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc /usr/bin/gcc
+       sudo ln -sfv /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++ /usr/bin/g++
+       sudo ln -sfv /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-cpp /usr/bin/cpp
+       sudo ln -sfv /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcov /usr/bin/gcov
+       sudo ln -sfv /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-c++ /usr/bin/c++
+       sudo ln -sfv /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc /usr/bin/cc
 
     - name: Cloning repos
       run: |
