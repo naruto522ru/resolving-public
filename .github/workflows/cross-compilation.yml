@@ -1,0 +1,33 @@
+name: Build amneziawg WebOS LG
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Building_for_WebOS_LG_amneziawg:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install base package
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+       sudo apt update
+       sudo apt install -y bind9-dnsutils git wget libarchive-tools gawk bash moreutils coreutils cmake util-linux dos2unix sudo language-pack-ru language-pack-en locales --no-install-suggests
+       sudo sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+       sudo sed -i -e 's/# ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen
+       sudo locale-gen --no-purge en_US.UTF-8 ru_RU.UTF-8
+
+    - name: Install Golang
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+       sudo apt update && sudo apt install make software-properties-common -y --no-install-suggests && sudo add-apt-repository ppa:longsleep/golang-backports -y
+       sudo apt install golang upx-ucl -y --no-install-suggests
+       
+    - name: Downlownd WeOS NDK
+      run: |
+       wget https://github.com/openlgtv/buildroot-nc4/releases/download/webos-b17b4cc/arm-lgtv-linux-gnueabi_sdk-buildroot.tar.gz -P /tmp
+       bsdtar -pxf /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot.tar.gz -C /tmp
+       ./tmp/arm-webos-linux-gnueabi_sdk-buildroot/relocate-sdk.sh
