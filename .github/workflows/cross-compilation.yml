@@ -25,18 +25,18 @@ jobs:
       run: |
        sudo apt update && sudo apt install make software-properties-common -y --no-install-suggests && sudo add-apt-repository ppa:longsleep/golang-backports -y
        sudo apt install golang upx-ucl -y --no-install-suggests
-       
+
     - name: Download WebOS NDK
       run: |
-       wget -nv -4 https://archlinuxarm.org/builder/xtools/x-tools7h.tar.xz -P /tmp && cd /tmp
-       bsdtar -pxf /tmp/x-tools7h.tar.xz
-       rm -f /tmp/x-tools7h.tar.xz
-       sudo ln -sfv /tmp/x-tools7h/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-gcc /usr/bin/gcc
-       sudo ln -sfv /tmp/x-tools7h/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-g++ /usr/bin/g++
-       sudo ln -sfv /tmp/x-tools7h/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-cpp /usr/bin/cpp
-       sudo ln -sfv /tmp/x-tools7h/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-gcov /usr/bin/gcov
-       sudo ln -sfv /tmp/x-tools7h/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-c++ /usr/bin/c++
-       sudo ln -sfv /tmp/x-tools7h/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-gcc /usr/bin/cc
+       wget -nv -4 https://releases.linaro.org/components/toolchain/binaries/5.2-2015.11-1/arm-linux-gnueabi/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi.tar.xz -P /tmp && cd /tmp
+       bsdtar -pxf /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi.tar.xz
+       rm -f /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi.tar.xz
+       sudo ln -sfv /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc /usr/bin/gcc
+       sudo ln -sfv /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ /usr/bin/g++
+       sudo ln -sfv /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-cpp /usr/bin/cpp
+       sudo ln -sfv /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcov /usr/bin/gcov
+       sudo ln -sfv /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-c++ /usr/bin/c++
+       sudo ln -sfv /tmp/gcc-linaro-5.2-2015.11-1-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc /usr/bin/cc
 
     - name: Cloning repos
       run: |
