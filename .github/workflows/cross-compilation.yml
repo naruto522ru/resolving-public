@@ -28,15 +28,16 @@ jobs:
        
     - name: Download WebOS NDK
       run: |
-       wget -nv -4 https://github.com/openlgtv/buildroot-nc4/releases/download/webos-b17b4cc/arm-lgtv-linux-gnueabi_sdk-buildroot.tar.gz -P /tmp && cd /tmp
-       bsdtar -pxf /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot.tar.gz
-       ./arm-lgtv-linux-gnueabi_sdk-buildroot/relocate-sdk.sh
-        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/usr/bin/arm-lgtv-linux-gnueabi-gcc /usr/bin/gcc
-        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/usr/bin/arm-lgtv-linux-gnueabi-g++ /usr/bin/g++
-        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/usr/bin/arm-lgtv-linux-gnueabi-cpp /usr/bin/cpp
-        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/usr/bin/arm-lgtv-linux-gnueabi-gcov /usr/bin/gcov
-        sudo ln -sfv /tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/usr/bin/arm-lgtv-linux-gnueabi-c++ /usr/bin/c++
-       
+       wget -nv -4 https://archlinuxarm.org/builder/xtools/x-tools7h.tar.xz -P /tmp && cd /tmp
+       bsdtar -pxf /tmp/x-tools7h.tar.xz
+       rm -f /tmp/x-tools7h.tar.xz
+       sudo ln -sfv /tmp/x-tools7h/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-gcc /usr/bin/gcc
+       sudo ln -sfv /tmp/x-tools7h/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-g++ /usr/bin/g++
+       sudo ln -sfv /tmp/x-tools7h/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-cpp /usr/bin/cpp
+       sudo ln -sfv /tmp/x-tools7h/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-gcov /usr/bin/gcov
+       sudo ln -sfv /tmp/x-tools7h/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-c++ /usr/bin/c++
+       sudo ln -sfv /tmp/x-tools7h/arm-unknown-linux-gnueabihf/bin/arm-unknown-linux-gnueabihf-gcc /usr/bin/cc
+
     - name: Cloning repos
       run: |
        cd /tmp
