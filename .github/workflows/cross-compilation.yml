@@ -49,7 +49,7 @@ jobs:
       run: |
        cd /tmp/amneziawg-tools
        PATH="/tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/arm-lgtv-linux-gnueabi_sdk-buildroot/bin:$PATH"
-       make -C src WITH_BASHCOMPLETION=no WITH_WGQUICK=no WITH_SYSTEMDUNITS=no wg CC=/tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/usr/bin/arm-lgtv-linux-gnueabi-gcc
+       make -C src WITH_BASHCOMPLETION=no WITH_WGQUICK=no WITH_SYSTEMDUNITS=no CC=/tmp/arm-lgtv-linux-gnueabi_sdk-buildroot/usr/bin/arm-lgtv-linux-gnueabi-gcc wg
        mv -fv /tmp/amneziawg-tools/src/wg /tmp/amneziawg-tools/src/awg
 
     - name: Prepare artifacts
