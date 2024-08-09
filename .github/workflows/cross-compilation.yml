@@ -34,6 +34,7 @@ jobs:
        
     - name: Cloning repos
       run: |
+       cd /tmp
        git clone https://github.com/amnezia-vpn/amneziawg-tools.git
        git clone https://github.com/amnezia-vpn/amneziawg-go.git
 
