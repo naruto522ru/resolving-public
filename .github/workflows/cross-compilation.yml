@@ -56,6 +56,7 @@ jobs:
        cd /tmp/amneziawg-tools
        make -C src WITH_BASHCOMPLETION=no WITH_WGQUICK=no WITH_SYSTEMDUNITS=no wg
        mv -fv /tmp/amneziawg-tools/src/wg /tmp/amneziawg-tools/src/awg
+       /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/bin/strip /tmp/amneziawg-tools/src/awg
        echo "" && file /tmp/amneziawg-tools/src/awg
 
     - name: Prepare artifacts
