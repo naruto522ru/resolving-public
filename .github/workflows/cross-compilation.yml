@@ -1,0 +1,77 @@
+name: Build amneziawg WebOS LG
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Building_for_WebOS_LG_amneziawg:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install base package
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+       sudo apt update
+       sudo apt install -y bind9-dnsutils git wget libarchive-tools gawk bash moreutils coreutils cmake util-linux dos2unix sudo language-pack-ru language-pack-en locales --no-install-suggests
+       sudo sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+       sudo sed -i -e 's/# ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/' /etc/locale.gen
+       sudo locale-gen --no-purge en_US.UTF-8 ru_RU.UTF-8
+
+    - name: Install Golang
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+       sudo apt update && sudo apt install make software-properties-common -y --no-install-suggests && sudo add-apt-repository ppa:longsleep/golang-backports -y
+       sudo apt install golang upx-ucl -y --no-install-suggests
+
+    - name: Download WebOS NDK
+      run: |
+       wget -nv -4 http://releases.linaro.org/components/toolchain/binaries/7.5-2019.12/arm-linux-gnueabihf/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz -P /tmp && cd /tmp
+       bsdtar -pxf /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz
+       rm -f /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz
+       sudo ln -sfv /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc /usr/bin/gcc
+       sudo ln -sfv /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-g++ /usr/bin/g++
+       sudo ln -sfv /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-cpp /usr/bin/cpp
+       sudo ln -sfv /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcov /usr/bin/gcov
+       sudo ln -sfv /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-c++ /usr/bin/c++
+       sudo ln -sfv /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc /usr/bin/cc
+
+    - name: Cloning repos
+      run: |
+       cd /tmp
+       git clone https://github.com/amnezia-vpn/amneziawg-tools.git
+       git clone https://github.com/amnezia-vpn/amneziawg-go.git
+
+    - name: Build amneziawg-go
+      run: |
+       cd /tmp/amneziawg-go
+       go mod download && go mod verify
+       GOOS=linux GOARCH=arm go build -ldflags "-s -w" -v -o ./amneziawg-go
+       upx -q --best --lzma ./amneziawg-go 2>/dev/null
+
+    - name: Build amneziawg-tools
+      run: |
+       cd /tmp/amneziawg-tools
+       make -C src WITH_BASHCOMPLETION=no WITH_WGQUICK=no WITH_SYSTEMDUNITS=no wg
+       mv -fv /tmp/amneziawg-tools/src/wg /tmp/amneziawg-tools/src/awg
+       /tmp/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/arm-linux-gnueabihf/bin/strip /tmp/amneziawg-tools/src/awg
+       echo "" && file /tmp/amneziawg-tools/src/awg
+
+    - name: Prepare artifacts
+      run: echo "BUILD_TIMESTAMP=$(date '+%d.%m.%Y_%H-%M-%S')" >> $GITHUB_ENV
+
+    - name: Upload amneziawg-go
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        name: amneziawg-go_${{ env.BUILD_TIMESTAMP }}
+        retention-days: 3
+        path: /tmp/amneziawg-go/amneziawg-go
+
+    - name: Upload amneziawg-tools
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        name: amneziawg-tools_${{ env.BUILD_TIMESTAMP }}
+        retention-days: 3
+        path: /tmp/amneziawg-tools/src/awg
